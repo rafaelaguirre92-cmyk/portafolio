@@ -82,6 +82,20 @@ function App() {
   const [activeSection, setActiveSection] = useState('hero')
   const [activeProjectFilter, setActiveProjectFilter] = useState('Todos')
   const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
+  const [showNav, setShowNav] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Show nav after scrolling 300px (approx when passing the hero name)
+      if (window.scrollY > 300) {
+        setShowNav(true)
+      } else {
+        setShowNav(false)
+      }
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   const filteredProjects = activeProjectFilter === 'Todos' 
     ? projectsData 
@@ -157,7 +171,12 @@ function App() {
     <>
       
 {/* Top Navigation Bar */}
-<nav className="fixed top-0 w-full z-50 bg-zinc-950/60 backdrop-blur-xl shadow-2xl shadow-black/50">
+<motion.nav 
+  initial={{ y: -100, opacity: 0 }}
+  animate={showNav ? { y: 0, opacity: 1 } : { y: -100, opacity: 0 }}
+  transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+  className="fixed top-0 w-full z-50 bg-zinc-950/60 backdrop-blur-xl shadow-2xl shadow-black/50"
+>
 <div className="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
 <a href="#hero" onClick={(e) => handleScroll(e, 'hero')} className="text-xl font-headline font-black tracking-tighter text-zinc-100">RAFA AGUIRRE</a>
 <div className="hidden md:flex gap-8 items-center">
@@ -171,10 +190,10 @@ function App() {
 <span className="material-symbols-outlined">menu</span>
 </button>
 </div>
-</nav>
+</motion.nav>
 
 {/* Hero Section */}
-<header id="hero" className="relative min-h-screen flex items-center pt-24 px-8 max-w-7xl mx-auto overflow-visible">
+<header id="hero" className="relative min-h-screen flex items-center px-8 max-w-7xl mx-auto overflow-visible">
 <div className="grid md:grid-cols-12 gap-12 items-center w-full">
 <motion.div 
   className="md:col-span-7 z-10"
@@ -228,7 +247,7 @@ function App() {
   animate={{ opacity: 1, y: 0 }}
   transition={{ duration: 0.5, delay: 0.7 }}
 >
-<a className="bg-primary hover:bg-primary-fixed-dim text-on-primary px-10 py-4 rounded-lg font-bold text-lg transition-all flex items-center gap-2 group" href="#work">
+<a className="bg-primary hover:bg-primary-fixed-dim text-on-primary px-10 py-4 rounded-lg font-bold text-lg transition-all flex items-center gap-2 group" href="#work" onClick={(e) => handleScroll(e, 'work')}>
                         Ver proyectos
                         <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
 </a>
