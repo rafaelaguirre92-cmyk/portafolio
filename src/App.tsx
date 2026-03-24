@@ -83,6 +83,14 @@ function App() {
   const [activeProjectFilter, setActiveProjectFilter] = useState('Todos')
   const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
   const [showNav, setShowNav] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768)
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -204,13 +212,13 @@ function App() {
 {/* Hero Anchor for Observers */}
 <div id="hero" className="absolute top-0 h-10 w-full pointer-events-none" />
 
-{/* Hero Container - Provides the scroll height */}
-<div ref={heroScrollRef} className="h-screen w-full relative z-0">
-  {/* Static fixed header background */}
-  <header className="fixed top-0 left-0 w-full h-screen flex items-center px-8 z-0">
-    {/* Animated content only */}
+{/* Hero Container - h-screen only on desktop to allow normal scroll on mobile */}
+<div ref={heroScrollRef} className="md:h-screen h-auto w-full relative z-0">
+  {/* Static fixed header background (Desktop only) */}
+  <header className="md:fixed relative top-0 left-0 w-full md:h-screen py-20 md:py-0 flex items-center px-8 z-0">
+    {/* Animated content only (Controlled by isMobile) */}
     <motion.div 
-      style={{ scale: contentScale, opacity: contentOpacity, filter: contentBlur }}
+      style={!isMobile ? { scale: contentScale, opacity: contentOpacity, filter: contentBlur } : {}}
       className="grid md:grid-cols-12 gap-12 items-center w-full max-w-7xl mx-auto"
     >
       <motion.div 
@@ -287,7 +295,7 @@ function App() {
   </header>
 </div>
 
-<main className="relative z-10 bg-zinc-950 shadow-[0_-20px_50px_rgba(0,0,0,0.8)]">
+<main className="relative z-10 bg-zinc-950 md:mt-0 shadow-[0_-20px_50px_rgba(0,0,0,0.8)]">
   {/* About Section */}
   <section className="py-32 px-8 bg-surface-container-low relative" id="about">
   <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-20">
