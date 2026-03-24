@@ -205,13 +205,13 @@ function App() {
 <div id="hero" className="absolute top-0 h-10 w-full pointer-events-none" />
 
 {/* Hero Container - Provides the scroll height */}
-<div ref={heroScrollRef} className="md:h-screen h-[150vh] w-full relative z-0">
-  {/* Sticky/Fixed header background */}
-  <header className="sticky md:fixed top-0 left-0 w-full h-screen flex items-center px-4 md:px-8 z-0">
+<div ref={heroScrollRef} className="h-screen w-full relative z-0">
+  {/* Static fixed header background */}
+  <header className="fixed top-0 left-0 w-full h-screen flex items-center px-8 z-0">
     {/* Animated content only */}
     <motion.div 
       style={{ scale: contentScale, opacity: contentOpacity, filter: contentBlur }}
-      className="grid md:grid-cols-12 gap-6 md:gap-12 items-center w-full max-w-7xl mx-auto"
+      className="grid md:grid-cols-12 gap-12 items-center w-full max-w-7xl mx-auto"
     >
       <motion.div 
         className="md:col-span-7 z-10"
@@ -220,7 +220,7 @@ function App() {
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
         <motion.h1 
-          className="font-headline text-5xl md:text-8xl font-extrabold tracking-tighter leading-[0.9] mb-4 md:mb-6"
+          className="font-headline text-6xl md:text-8xl font-extrabold tracking-tighter leading-[0.9] mb-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -228,7 +228,7 @@ function App() {
           RAFA <br/> <span className="text-primary">AGUIRRE</span>
         </motion.h1>
         <motion.p 
-          className="font-headline text-xl md:text-3xl font-bold text-on-surface-variant mb-6 md:mb-8 max-w-xl"
+          className="font-headline text-2xl md:text-3xl font-bold text-on-surface-variant mb-8 max-w-xl"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.3 }}
@@ -236,15 +236,15 @@ function App() {
           Marketing y Estrategia Digital
         </motion.p>
         <motion.p 
-          className="text-base md:text-lg text-on-surface-variant mb-8 md:mb-10 max-w-lg leading-relaxed"
+          className="text-lg text-on-surface-variant mb-10 max-w-lg leading-relaxed"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
-          Convierto objetivos de negocio en campañas digitales con resultados medibles. Planeo, ejecuto y mido estrategias.
+          Convierto objetivos de negocio en campañas digitales con resultados medibles. Planeo, ejecuto y mido estrategias que conectan marcas con su audiencia.
         </motion.p>
         <motion.div 
-          className="flex gap-4 md:gap-6 mb-8 md:mb-10"
+          className="flex gap-6 mb-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.6 }}
@@ -265,7 +265,7 @@ function App() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.7 }}
         >
-          <a className="bg-primary hover:bg-primary-fixed-dim text-on-primary px-8 md:px-10 py-3 md:py-4 rounded-lg font-bold text-base md:text-lg transition-all flex items-center gap-2 group" href="#work" onClick={(e) => handleScroll(e, 'work')}>
+          <a className="bg-primary hover:bg-primary-fixed-dim text-on-primary px-10 py-4 rounded-lg font-bold text-lg transition-all flex items-center gap-2 group" href="#work" onClick={(e) => handleScroll(e, 'work')}>
             Ver proyectos
             <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
           </a>
@@ -277,9 +277,10 @@ function App() {
         animate={{ opacity: 1, scale: 1, x: 0 }}
         transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
       >
-        <div className="absolute -inset-x-10 md:-inset-x-32 -inset-y-4 bg-[#0FBDBD]/20 blur-[60px] md:blur-[120px] rounded-full opacity-80"></div>
-        <div className="relative rounded-2xl overflow-hidden aspect-square md:aspect-[4/5] bg-surface-container-low border border-outline-variant max-w-[280px] md:max-w-none mx-auto">
-          <img alt="Rafa Aguirre" className="w-full h-full object-cover" src="/my_photo.jpg"/>
+        <div className="absolute -inset-x-32 -inset-y-4 bg-[#0FBDBD]/20 blur-[120px] rounded-full opacity-80 transition-opacity"></div>
+        <div className="absolute -inset-10 bg-[#0FBDBD]/10 blur-[80px] rounded-full opacity-100 transition-opacity"></div>
+        <div className="relative rounded-2xl overflow-hidden aspect-[4/5] bg-surface-container-low border border-outline-variant">
+          <img alt="Rafa Aguirre" className="w-full h-full object-cover transition-all duration-700" src="/my_photo.jpg"/>
         </div>
       </motion.div>
     </motion.div>
