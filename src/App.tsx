@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
+import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion'
 
 const projectsData = [
   {
@@ -133,9 +133,15 @@ function App() {
     offset: ["start start", "end start"]
   });
 
-  const contentScale = useTransform(scrollYProgress, [0, 1], [1, 0.85]);
-  const contentOpacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
-  const contentBlur = useTransform(scrollYProgress, [0, 1], ["blur(0px)", "blur(10px)"]);
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  const contentScale = useTransform(smoothProgress, [0, 1], [1, 0.88]);
+  const contentOpacity = useTransform(smoothProgress, [0, 1], [1, 0]);
+  const contentY = useTransform(smoothProgress, [0, 1], [0, -40]);
 
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault()
@@ -218,8 +224,8 @@ function App() {
   <header className="md:fixed relative top-0 left-0 w-full md:h-screen py-20 md:py-0 flex items-center px-8 z-0">
     {/* Animated content only (Controlled by isMobile) */}
     <motion.div 
-      style={!isMobile ? { scale: contentScale, opacity: contentOpacity, filter: contentBlur } : {}}
-      className="grid md:grid-cols-12 gap-12 items-center w-full max-w-7xl mx-auto"
+      style={!isMobile ? { scale: contentScale, opacity: contentOpacity, y: contentY, willChange: 'transform, opacity' } : {}}
+      className="grid md:grid-cols-12 gap-12 items-center w-full max-w-7xl mx-auto transform-gpu"
     >
       <motion.div 
         className="md:col-span-7 z-10"
@@ -285,8 +291,8 @@ function App() {
         animate={{ opacity: 1, scale: 1, x: 0 }}
         transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
       >
-        <div className="absolute -inset-x-32 -inset-y-4 bg-[#0FBDBD]/20 blur-[120px] rounded-full opacity-80 transition-opacity"></div>
-        <div className="absolute -inset-10 bg-[#0FBDBD]/10 blur-[80px] rounded-full opacity-100 transition-opacity"></div>
+        <div className="absolute -inset-x-32 -inset-y-4 bg-[#0FBDBD]/20 blur-[120px] rounded-full opacity-80 pointer-events-none transform-gpu"></div>
+        <div className="absolute -inset-10 bg-[#0FBDBD]/10 blur-[80px] rounded-full opacity-100 pointer-events-none transform-gpu"></div>
         <div className="relative rounded-2xl overflow-hidden aspect-[4/5] bg-surface-container-low border border-outline-variant">
           <img alt="Rafa Aguirre" className="w-full h-full object-cover transition-all duration-700" src="/my_photo.jpg"/>
         </div>
